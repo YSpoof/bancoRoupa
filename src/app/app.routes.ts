@@ -25,6 +25,14 @@ export const routes: Routes = [
           );
         },
       },
+      {
+        path: 'login',
+        loadComponent() {
+          return import('./pages/dashboard/login/login.component').then(
+            (m) => m.LoginPageComponent
+          );
+        },
+      },
     ],
   },
 ];
