@@ -8,6 +8,5 @@ import { RouterModule } from '@angular/router';
     <p>Dashboard LAYOUT works!</p>
     <router-outlet></router-outlet>
   `,
-  styles: ``,
 })
 export class DashboardLayoutComponent {}
