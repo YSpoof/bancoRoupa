@@ -9,4 +9,22 @@ export const routes: Routes = [
       );
     },
   },
+  {
+    path: 'dashboard',
+    loadComponent() {
+      return import('./layouts/dashboard/dashboard.component').then(
+        (m) => m.DashboardLayoutComponent
+      );
+    },
+    children: [
+      {
+        path: '',
+        loadComponent() {
+          return import('./pages/dashboard/dashboard.component').then(
+            (m) => m.DashboardPageComponent
+          );
+        },
+      },
+    ],
+  },
 ];
