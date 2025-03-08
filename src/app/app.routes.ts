@@ -25,6 +25,14 @@ export const routes: Routes = [
           );
         },
       },
+      {
+        path: 'register',
+        loadComponent() {
+          return import('./pages/dashboard/register/register.component').then(
+            (m) => m.RegisterPageComponent
+          );
+        },
+      },
     ],
   },
 ];
