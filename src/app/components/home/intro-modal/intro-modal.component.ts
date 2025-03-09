@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-intro-modal',
@@ -14,10 +15,17 @@ import { Component, input } from '@angular/core';
       </p>
       <button
         class="transition-all mt-4 w-full px-6 py-4 cursor-pointer bg-vb-tertiary hover:bg-vb-secondary active:scale-95"
+        (click)="register()"
       >
         Cadastrar
       </button>
     </div>
   `,
 })
-export class IntroModalComponent {}
+export class IntroModalComponent {
+  toast = inject(ToastService);
+
+  register() {
+    this.toast.showToast('Lógica não implementada!', 'VestBank', 'warning');
+  }
+}
