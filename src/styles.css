@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "ngx-toastr/toastr";
 
 @theme {
   --color-vb-primary: #cee5f2;
