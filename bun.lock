@@ -14,6 +14,7 @@
         "@angular/platform-server": "^19.2.1",
         "@angular/router": "^19.2.1",
         "@angular/ssr": "^19.2.1",
+        "@prisma/client": "6.4.1",
         "@tailwindcss/postcss": "^4.0.12",
         "express": "^4.21.2",
         "ngx-toastr": "^19.0.0",
@@ -44,8 +45,9 @@
   "trustedDependencies": [
     "lmdb",
     "esbuild",
-    "msgpackr-extract",
     "@prisma/engines",
+    "@prisma/client",
+    "msgpackr-extract",
     "prisma",
     "@parcel/watcher",
   ],
@@ -493,6 +495,8 @@
     "@parcel/watcher-win32-x64": ["@parcel/watcher-win32-x64@2.5.1", "", { "os": "win32", "cpu": "x64" }, "sha512-9lHBdJITeNR++EvSQVUcaZoWupyHfXe1jZvGZ06O/5MflPcuPLtEphScIBL+AiCWBO46tDSHzWyD0uDmmZqsgA=="],
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
+
+    "@prisma/client": ["@prisma/client@6.4.1", "", { "peerDependencies": { "prisma": "*", "typescript": ">=5.1.0" }, "optionalPeers": ["prisma", "typescript"] }, "sha512-A7Mwx44+GVZVexT5e2GF/WcKkEkNNKbgr059xpr5mn+oUm2ZW1svhe+0TRNBwCdzhfIZ+q23jEgsNPvKD9u+6g=="],
 
     "@prisma/debug": ["@prisma/debug@6.4.1", "", {}, "sha512-Q9xk6yjEGIThjSD8zZegxd5tBRNHYd13GOIG0nLsanbTXATiPXCLyvlYEfvbR2ft6dlRsziQXfQGxAgv7zcMUA=="],
 
