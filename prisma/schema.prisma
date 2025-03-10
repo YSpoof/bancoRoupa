@@ -20,8 +20,9 @@ model Client {
 }
 
 model Account {
-  id       Int    @id @default(autoincrement())
-  client   Client @relation(fields: [clientId], references: [id])
-  clientId Int
-  balance  BigInt
+  id        Int     @id @default(autoincrement())
+  client    Client  @relation(fields: [clientId], references: [id])
+  clientId  Int
+  suspended Boolean @default(false)
+  balance   BigInt
 }
