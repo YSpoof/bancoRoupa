@@ -7,6 +7,13 @@ import {
 import express from 'express';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { validateJwtToken } from './utils/server/jwt';
+import { loginRoute } from './utils/server/routes/login.post';
+import { logoutRoute } from './utils/server/routes/logout.delete';
+import { notFoundRoute } from './utils/server/routes/notFound';
+import { refreshRoute } from './utils/server/routes/refresh.post';
+import { registerRoute } from './utils/server/routes/register.post';
+import { validateRoute } from './utils/server/routes/validate.get';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
@@ -14,13 +21,22 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Backend: All Working!' });
-});
+app.use('/api', express.json());
 
-app.get('/api/error', (req, res) => {
-  res.status(500).json({ message: 'Backend: This is an expected error!' });
-});
+app.post('/api/login', loginRoute);
+
+app.post('/api/register', registerRoute);
+
+app.post('/api/refresh', refreshRoute);
+
+app.get('/api/validate', validateJwtToken, validateRoute);
+
+app.delete('/api/logout', validateJwtToken, logoutRoute);
+
+app.all('/api/*', notFoundRoute);
+
+// DEFAULT ANGULAR STUFF, DON'T TOUCH BELLOW!
+// YOU HAVE BEEN WARNED!
 
 /**
  * Serve static files from /browser
