@@ -1,0 +1,45 @@
+# Variables
+@host = http://localhost:4200/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZmMxNDBlLWQ1MTktNDcwMi1hYmQyLTcxYzBjOWYzNDM3MSIsIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNzQxNzAzODIyLCJleHAiOjE3NDE3OTAyMjJ9.hiwUphgur3h6mjkbKoAq03fTuAjPPVKTV4dm93wdTNQ
+
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOnsiaWQiOiI2OWZjMTQwZS1kNTE5LTQ3MDItYWJkMi03MWMwYzlmMzQzNzEiLCJuYW1lIjoidGVzdCIsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9LCJpYXQiOjE3NDE3MDM4MjJ9.7riIAOPxXqG_tG1ZPLHYmXqVGx1zkgX5_6ASA-LGQjQ
+# Login as test user, 
+POST {{host}}/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "password"
+}
+###
+
+# Register as test user
+POST {{host}}/register
+Content-Type: application/json
+
+{
+  "name": "test",
+  "email": "test@test.com",
+  "password": "password"
+}
+
+###
+
+# Logout as test user ( this invalidates the refreshToken )
+DELETE {{host}}/logout
+Authorization: Bearer {{token}}
+
+###
+
+# Test if normal token is valid
+GET {{host}}/validate
+Authorization: Bearer {{token}}
+###
+
+# Generate a new token based on refreshed one
+POST {{host}}/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
