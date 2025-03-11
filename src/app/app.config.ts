@@ -6,6 +6,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideToastr } from 'ngx-toastr';
 
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   provideClientHydration,
   withEventReplay,
@@ -19,5 +20,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideAnimations(),
     provideToastr(),
+    provideHttpClient(withFetch()),
   ],
 };
