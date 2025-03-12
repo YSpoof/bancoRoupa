@@ -38,6 +38,7 @@ export async function registerRoute(
       password: hashedPassword,
       Account: {
         create: {
+          pixi: email,
           balance: 0,
         },
       },

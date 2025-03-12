@@ -1,11 +1,11 @@
 {
-  "name": "banco-sem-dados",
-  "version": "0.0.0",
+  "name": "vestbank",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "dev": "ng serve",
     "build": "ng build",
-    "serve": "node dist/banco-sem-dados/server/server.mjs"
+    "serve": "node dist/VestBank/server/server.mjs"
   },
   "private": true,
   "dependencies": {

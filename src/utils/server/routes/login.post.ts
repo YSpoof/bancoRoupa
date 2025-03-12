@@ -33,7 +33,6 @@ export async function loginRoute(req: Request, res: Response): Promise<void> {
         where: { id: client.id },
         data: { refreshToken },
       });
-      console.log(`User ${client.email} logged in with credentials`);
       res.status(200).json({
         client: {
           name: client.name,
@@ -77,7 +76,6 @@ export async function loginRoute(req: Request, res: Response): Promise<void> {
         data: { refreshToken },
       });
 
-      console.log(`User ${client.email} logged in with token`);
       res.status(200).json({
         client: {
           name: client.name,
