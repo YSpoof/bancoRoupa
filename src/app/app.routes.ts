@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { dashboardGuard } from './guards/dashboard.guard';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,7 @@ export const routes: Routes = [
             (m) => m.DashboardPageComponent
           );
         },
+        canActivate: [dashboardGuard],
       },
       {
         path: 'register',

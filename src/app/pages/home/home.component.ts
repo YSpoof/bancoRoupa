@@ -1,10 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { AccountCardComponent } from '../../components/home/account-card/account-card.component';
 import { CardComponent } from '../../components/home/card/card.component';
 import { FooterComponent } from '../../components/home/footer/footer.component';
 import { HeaderComponent } from '../../components/home/header/header.component';
 import { IntroModalComponent } from '../../components/home/intro-modal/intro-modal.component';
-import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-home',
@@ -113,9 +112,4 @@ import { ToastService } from '../../services/toast.service';
     </section>
     <app-footer />`,
 })
-export class HomePageComponent {
-  toast = inject(ToastService);
-  ngOnInit() {
-    this.toast.showToast('Bem-vindo ao VestBank!', 'VestBank');
-  }
-}
+export class HomePageComponent {}

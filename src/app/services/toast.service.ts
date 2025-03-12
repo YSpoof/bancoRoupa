@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { GlobalConfig, ToastrService } from 'ngx-toastr';
 
 type ToastType = 'success' | 'error' | 'info' | 'warning';
 
@@ -14,10 +14,19 @@ export class ToastService {
     title: string = 'VestBank',
     type: ToastType = 'success'
   ): void {
-    let positionClass = 'toast-top-center';
+    let positionClass = 'toast-top-right';
     let closeButton = true;
+    let timeOut = 7000;
+    let progressBar = true;
+    let maxOpened = 1;
 
-    const toastConfig = { closeButton, positionClass };
+    const toastConfig = {
+      closeButton,
+      positionClass,
+      timeOut,
+      progressBar,
+      maxOpened,
+    } as GlobalConfig;
 
     switch (type) {
       case 'error':

@@ -57,5 +57,5 @@ export async function registerRoute(
     },
   });
 
-  res.status(201).json({ token, refreshToken });
+  res.status(201).json({ client: { name: newUser.name }, token, refreshToken });
 }
