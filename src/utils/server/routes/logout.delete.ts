@@ -7,7 +7,7 @@ export async function logoutRoute(req: Request, res: Response): Promise<void> {
     const clientId = req.client?.id;
 
     if (!clientId) {
-      res.status(401).json({ message: messages.unauthorized });
+      res.status(403).json({ message: messages.unauthorized });
       return;
     }
 

@@ -1,7 +1,6 @@
 export const messages = {
   userNotFound: 'Usuário não encontrado.',
   userAlreadyExists: 'Usuário já existe.',
-  invalidPassword: 'Senha inválida.',
   accountCreated: 'Conta criada com sucesso.',
   serverError: 'Ocorreu um erro no servidor.',
   invalidToken: 'Token inválido.',
@@ -9,4 +8,7 @@ export const messages = {
   unauthorized: 'Não autorizado.',
   missingFields: 'Campos obrigatórios não preenchidos.',
   loggedOut: 'Deslogado com sucesso.',
+  accountDeleted: 'Conta deletada com sucesso.',
+  invalidParams: 'Parâmetros inválidos.',
+  tokenExpired: 'Token expirado.',
 };

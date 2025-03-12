@@ -38,6 +38,7 @@ export async function registerRoute(
       password: hashedPassword,
       Account: {
         create: {
+          pixi: email,
           balance: 0,
         },
       },
@@ -57,5 +58,11 @@ export async function registerRoute(
     },
   });
 
-  res.status(201).json({ token, refreshToken });
+  res.status(201).json({
+    id: newUser.id,
+    name: newUser.name,
+    email: newUser.email,
+    token,
+    refreshToken,
+  });
 }

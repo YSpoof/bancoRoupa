@@ -24,6 +24,7 @@ model Account {
   id        String  @id @default(uuid())
   client    Client  @relation(fields: [clientId], references: [id])
   clientId  String
+  pixi      String  @unique @default(cuid())
   suspended Boolean @default(false)
   balance   Int     @default(0)
 }

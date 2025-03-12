@@ -20,7 +20,7 @@ export const generateToken = (client: Client) => {
   };
 
   return jwt.sign(payload, process.env['JWT_SECRET']!, {
-    expiresIn: '1d',
+    expiresIn: '15s',
   });
 };
 
@@ -49,7 +49,7 @@ export const validateJwtToken = (
 
   jwt.verify(token, process.env['JWT_SECRET']!, (err, decoded) => {
     if (err) {
-      return res.status(403).json({ message: messages.invalidToken });
+      return res.status(401).json({ message: messages.invalidToken });
     }
 
     req.client = decoded as Client;

@@ -1,7 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { HttpService } from '../../../services/http.service';
-import { ToastService } from '../../../services/toast.service';
-import { HelloApiResponse } from '../../../types';
 
 @Component({
   selector: 'app-footer',

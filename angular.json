@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "bancoRoupa": {
+    "VestBank": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -44,10 +44,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/banco-roupa",
+            "outputPath": "dist/VestBank",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [],
+            "polyfills": ["zone.js"],
+
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -91,10 +92,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "bancoRoupa:build:production"
+              "buildTarget": "VestBank:build:production"
             },
             "development": {
-              "buildTarget": "bancoRoupa:build:development"
+              "buildTarget": "VestBank:build:development"
             }
           },
           "defaultConfiguration": "development"

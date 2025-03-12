@@ -12,13 +12,13 @@ export async function refreshRoute(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    const tokenExistsOnDb = await prisma.client.findFirst({
+    const userWithTokenOnDb = await prisma.client.findFirst({
       where: {
         refreshToken,
       },
     });
 
-    if (!tokenExistsOnDb) {
+    if (!userWithTokenOnDb) {
       res.status(403).json({ message: messages.invalidToken });
       return;
     }
@@ -30,7 +30,7 @@ export async function refreshRoute(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    const newToken = generateToken(tokenExistsOnDb);
+    const newToken = generateToken(userWithTokenOnDb);
     res.json({ token: newToken });
   } catch (error) {
     console.error('Error in refresh token route:', error);

@@ -8,12 +8,15 @@ import express from 'express';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateJwtToken } from './utils/server/jwt';
+import { accountRoute } from './utils/server/routes/account.get';
+import { debugRoute } from './utils/server/routes/debug.get';
+import { deleteRoute } from './utils/server/routes/delete.delete';
 import { loginRoute } from './utils/server/routes/login.post';
 import { logoutRoute } from './utils/server/routes/logout.delete';
 import { notFoundRoute } from './utils/server/routes/notFound';
 import { refreshRoute } from './utils/server/routes/refresh.post';
 import { registerRoute } from './utils/server/routes/register.post';
-import { validateRoute } from './utils/server/routes/validate.get';
+import { resetRoute } from './utils/server/routes/reset.post';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
@@ -27,9 +30,15 @@ app.post('/api/login', loginRoute);
 
 app.post('/api/register', registerRoute);
 
+app.post('/api/reset', resetRoute);
+
 app.post('/api/refresh', refreshRoute);
 
-app.get('/api/validate', validateJwtToken, validateRoute);
+app.delete('/api/delete', validateJwtToken, deleteRoute);
+
+app.get('/api/debug', debugRoute);
+
+app.get('/api/account', validateJwtToken, accountRoute);
 
 app.delete('/api/logout', validateJwtToken, logoutRoute);
 

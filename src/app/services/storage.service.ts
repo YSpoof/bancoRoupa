@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 
 interface StorageOptions {
   storage?: 'local' | 'session';
@@ -8,6 +9,10 @@ interface StorageOptions {
   providedIn: 'root',
 })
 export class StorageService {
+  private platformId = inject(PLATFORM_ID);
+  private isBrowser = isPlatformBrowser(this.platformId);
+  private memoryStorage = new Map<string, string>();
+
   /**
    * Sets an item in the selected storage
    * @param key Storage key
@@ -15,6 +20,12 @@ export class StorageService {
    * @param options Storage options
    */
   set<T>(key: string, value: T, options: StorageOptions = {}): void {
+    if (!this.isBrowser) {
+      // In SSR, use memory storage
+      this.memoryStorage.set(key, JSON.stringify(value));
+      return;
+    }
+
     const storage = this.getStorage(options.storage);
 
     try {
@@ -32,6 +43,12 @@ export class StorageService {
    * @returns The stored value or null if not found
    */
   get<T>(key: string, options: StorageOptions = {}): T | null {
+    if (!this.isBrowser) {
+      // In SSR, use memory storage
+      const item = this.memoryStorage.get(key);
+      return item ? (JSON.parse(item) as T) : null;
+    }
+
     const storage = this.getStorage(options.storage);
 
     try {
@@ -49,6 +66,12 @@ export class StorageService {
    * @param options Storage options
    */
   remove(key: string, options: StorageOptions = {}): void {
+    if (!this.isBrowser) {
+      // In SSR, use memory storage
+      this.memoryStorage.delete(key);
+      return;
+    }
+
     const storage = this.getStorage(options.storage);
     storage.removeItem(key);
   }
@@ -58,6 +81,12 @@ export class StorageService {
    * @param options Storage options
    */
   clear(options: StorageOptions = {}): void {
+    if (!this.isBrowser) {
+      // In SSR, use memory storage
+      this.memoryStorage.clear();
+      return;
+    }
+
     const storage = this.getStorage(options.storage);
     storage.clear();
   }
