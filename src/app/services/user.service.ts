@@ -37,6 +37,7 @@ export class UserService {
         );
         this.storageClient.set('refresh', response.refreshToken);
         this.storageClient.set('token', response.token);
+        this.loadAccountData();
         this.router.navigateByUrl('/dashboard');
       },
       error: (error) => {
@@ -60,6 +61,7 @@ export class UserService {
           this.storageClient.set('refresh', response.refreshToken);
           this.storageClient.set('token', response.token);
           this.currentUserSig.set(response.client);
+          this.loadAccountData();
           this.router.navigateByUrl('/dashboard');
         },
         error: (error) => {
