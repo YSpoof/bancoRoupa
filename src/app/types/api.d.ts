@@ -18,3 +18,11 @@ export interface RefreshResponse {
   message?: string;
   token: string;
 }
+
+export interface AccountResponse {
+  id: string;
+  clientId: string;
+  pixi: string;
+  suspended: boolean;
+  balance: number;
+}

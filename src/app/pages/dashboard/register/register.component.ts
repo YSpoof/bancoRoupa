@@ -1,4 +1,4 @@
-import { afterNextRender, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -63,7 +63,7 @@ export class RegisterPageComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
       Validators.required,
-      Validators.minLength(6),
+      Validators.minLength(3),
     ]),
   });
 
@@ -90,7 +90,7 @@ export class RegisterPageComponent {
       }
       if (this.registerForm.get('password')?.errors?.['minlength']) {
         this.toast.showToast(
-          'Senha deve ter no mínimo 6 caracteres',
+          'Senha deve ter no mínimo 3 caracteres',
           'Erro',
           'error'
         );

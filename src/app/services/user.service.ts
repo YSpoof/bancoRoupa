@@ -2,7 +2,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, tap, throwError } from 'rxjs';
-import { LoginResponse, RefreshResponse, RegisterResponse } from '../types/api';
+import {
+  AccountResponse,
+  LoginResponse,
+  RefreshResponse,
+  RegisterResponse,
+} from '../types/api';
 import { StorageService } from './storage.service';
 import { ToastService } from './toast.service';
 
@@ -15,6 +20,7 @@ export class UserService {
   router = inject(Router);
   toast = inject(ToastService);
   currentUserSig = signal<{ name: string } | null>(null);
+  currentAccountSig = signal<AccountResponse[] | null>(null);
 
   login(
     email: string | null = null,
@@ -26,7 +32,9 @@ export class UserService {
     this.httpClient.post<LoginResponse>('/api/login', payload).subscribe({
       next: (response) => {
         this.currentUserSig.set(response.client);
-        this.toast.showToast(`Bem vindo(a), ${response.client.name}`);
+        this.toast.showToast(
+          `Bem vindo(a), ${response.client.name.split(' ')[0]}!`
+        );
         this.storageClient.set('refresh', response.refreshToken);
         this.storageClient.set('token', response.token);
         this.router.navigateByUrl('/dashboard');
@@ -46,7 +54,7 @@ export class UserService {
       .subscribe({
         next: (response) => {
           this.toast.showToast(
-            `Bem vindo(a), ${response.client.name}`,
+            `Bem vindo(a), ${response.client.name.split(' ')[0]}!`,
             'Cadastro Efetuado!'
           );
           this.storageClient.set('refresh', response.refreshToken);
@@ -89,6 +97,19 @@ export class UserService {
         }),
         catchError(this.handleError)
       );
+  }
+
+  loadAccountData() {
+    this.httpClient.get<AccountResponse[]>('/api/account').subscribe({
+      next: (response) => {
+        console.log(response);
+        this.currentAccountSig.set(response);
+      },
+      error: (error) => {
+        console.error(error);
+        this.toast.showToast(error.error.message, 'Erro', 'error');
+      },
+    });
   }
 
   private handleError = (error: HttpErrorResponse) => {
