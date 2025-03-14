@@ -8,4 +8,6 @@ export const messages = {
   unauthorized: 'Não autorizado.',
   missingFields: 'Campos obrigatórios não preenchidos.',
   loggedOut: 'Deslogado com sucesso.',
+  accountDeleted: 'Conta deletada com sucesso.',
+  invalidParams: 'Parâmetros inválidos.',
 };

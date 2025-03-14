@@ -11,11 +11,10 @@ import { ToastService } from '../../../services/toast.service';
 import { UserService } from '../../../services/user.service';
 
 @Component({
-  selector: 'app-register',
   imports: [ReactiveFormsModule, RouterModule],
   template: ` @if (userSvc.currentUserSig() === null) {
     <div class="flex flex-col items-center justify-center h-full">
-      <p class="text-2xl font-bold mb-4">Crie sua conta</p>
+      <p class="text-2xl font-bold mb-4">Abra a sua em menos em segundos!</p>
 
       <form [formGroup]="registerForm" class="flex flex-col gap-2 w-80">
         <input
@@ -41,7 +40,7 @@ import { UserService } from '../../../services/user.service';
         />
         <button
           (click)="register()"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          class="transition-all cursor-pointer bg-blue-500 hover:bg-blue-700 active:scale-95 text-white font-bold py-2 px-4 rounded"
         >
           Criar conta
         </button>
@@ -70,30 +69,22 @@ export class RegisterPageComponent {
   register() {
     if (!this.registerForm.valid) {
       if (this.registerForm.get('name')?.errors?.['required']) {
-        this.toast.showToast('Preencha o campo nome.', 'Erro', 'error');
+        this.toast.showError('Preencha o campo nome.');
       }
       if (this.registerForm.get('name')?.errors?.['minlength']) {
-        this.toast.showToast(
-          'Nome deve ter no mínimo 3 caracteres',
-          'Erro',
-          'error'
-        );
+        this.toast.showError('Nome deve ter no mínimo 3 caracteres');
       }
       if (this.registerForm.get('email')?.errors?.['required']) {
-        this.toast.showToast('Preencha o campo email.', 'Erro', 'error');
+        this.toast.showError('Preencha o campo email.');
       }
       if (this.registerForm.get('email')?.errors?.['email']) {
-        this.toast.showToast('Email informado é inválido', 'Erro', 'error');
+        this.toast.showError('Email informado é inválido');
       }
       if (this.registerForm.get('password')?.errors?.['required']) {
-        this.toast.showToast('Preencha o campo senha.', 'Erro', 'error');
+        this.toast.showError('Preencha o campo senha.');
       }
       if (this.registerForm.get('password')?.errors?.['minlength']) {
-        this.toast.showToast(
-          'Senha deve ter no mínimo 3 caracteres',
-          'Erro',
-          'error'
-        );
+        this.toast.showError('Senha deve ter no mínimo 3 caracteres');
       }
       return;
     }

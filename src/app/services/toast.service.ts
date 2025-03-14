@@ -1,45 +1,33 @@
 import { inject, Injectable } from '@angular/core';
 import { GlobalConfig, ToastrService } from 'ngx-toastr';
 
-type ToastType = 'success' | 'error' | 'info' | 'warning';
-
 @Injectable({
   providedIn: 'root',
 })
 export class ToastService {
   private toastr = inject(ToastrService);
 
-  showToast(
-    message: string = 'VestBank',
-    title: string = 'VestBank',
-    type: ToastType = 'success'
-  ): void {
-    let positionClass = 'toast-top-right';
-    let closeButton = true;
-    let timeOut = 7000;
-    let progressBar = true;
-    let maxOpened = 1;
+  private defaultToastConfig: Partial<GlobalConfig> = {
+    closeButton: true,
+    positionClass: 'toast-top-right',
+    timeOut: 7000,
+    progressBar: true,
+    maxOpened: 1,
+  };
 
-    const toastConfig = {
-      closeButton,
-      positionClass,
-      timeOut,
-      progressBar,
-      maxOpened,
-    } as GlobalConfig;
+  showSuccess(message: string, title: string = 'Sucesso!'): void {
+    this.toastr.success(message, title, this.defaultToastConfig);
+  }
 
-    switch (type) {
-      case 'error':
-        this.toastr.error(message, title, toastConfig);
-        break;
-      case 'info':
-        this.toastr.info(message, title, toastConfig);
-        break;
-      case 'warning':
-        this.toastr.warning(message, title, toastConfig);
-        break;
-      default:
-        this.toastr.success(message, title, toastConfig);
-    }
+  showError(message: string, title: string = 'Erro!'): void {
+    this.toastr.error(message, title, this.defaultToastConfig);
+  }
+
+  showInfo(message: string, title: string = 'Info'): void {
+    this.toastr.info(message, title, this.defaultToastConfig);
+  }
+
+  showWarning(message: string, title: string = 'Atenção'): void {
+    this.toastr.warning(message, title, this.defaultToastConfig);
   }
 }

@@ -11,11 +11,10 @@ import { ToastService } from '../../../services/toast.service';
 import { UserService } from '../../../services/user.service';
 
 @Component({
-  selector: 'app-login',
   imports: [ReactiveFormsModule, RouterModule],
   template: ` @if (userSvc.currentUserSig() === null) {
     <div class="flex flex-col items-center justify-center h-full">
-      <p class="text-2xl font-bold mb-4">Olá, faça o login</p>
+      <p class="text-2xl font-bold mb-4">Acesse a VestBank!</p>
 
       <form [formGroup]="loginForm" class="flex flex-col gap-2 w-80">
         <input
@@ -32,14 +31,19 @@ import { UserService } from '../../../services/user.service';
         />
         <button
           (click)="login()"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          class="transition-all cursor-pointer bg-green-700 hover:bg-green-800 active:scale-95 text-white font-bold py-2 px-4 rounded"
         >
           Login
         </button>
         <a
           routerLink="/dashboard/register"
           class="text-blue-500 hover:text-blue-700"
-          >Não possui uma conta? Crie uma aqui.</a
+          >Não sou cliente</a
+        >
+        <a
+          routerLink="/dashboard/reset"
+          class="text-yellow-500 hover:text-yellow-700"
+          >Esqueci a senha</a
         >
       </form>
     </div>
@@ -60,20 +64,16 @@ export class LoginPageComponent {
   login() {
     if (!this.loginForm.valid) {
       if (this.loginForm.get('email')?.errors?.['required']) {
-        this.toast.showToast('Preencha o campo email.', 'Erro', 'error');
+        this.toast.showError('Preencha o campo email.');
       }
       if (this.loginForm.get('email')?.errors?.['email']) {
-        this.toast.showToast('Email informado é inválido', 'Erro', 'error');
+        this.toast.showError('Email informado é inválido');
       }
       if (this.loginForm.get('password')?.errors?.['required']) {
-        this.toast.showToast('Preencha o campo senha.', 'Erro', 'error');
+        this.toast.showError('Preencha o campo senha.');
       }
       if (this.loginForm.get('password')?.errors?.['minlength']) {
-        this.toast.showToast(
-          'Senha deve ter no mínimo 6 caracteres',
-          'Erro',
-          'error'
-        );
+        this.toast.showError('Senha deve ter no mínimo 6 caracteres');
       }
       return;
     }

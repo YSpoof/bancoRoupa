@@ -13,7 +13,7 @@ import {
 } from '@angular/common/http';
 import {
   provideClientHydration,
-  withEventReplay,
+  withIncrementalHydration,
 } from '@angular/platform-browser';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideRouter(routes),
-    provideClientHydration(withEventReplay()),
+    provideClientHydration(withIncrementalHydration()),
     provideAnimations(),
     provideToastr(),
     provideHttpClient(withFetch(), withInterceptors([AuthInterceptor])),

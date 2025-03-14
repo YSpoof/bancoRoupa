@@ -58,5 +58,11 @@ export async function registerRoute(
     },
   });
 
-  res.status(201).json({ client: { name: newUser.name }, token, refreshToken });
+  res.status(201).json({
+    id: newUser.id,
+    name: newUser.name,
+    email: newUser.email,
+    token,
+    refreshToken,
+  });
 }

@@ -77,9 +77,9 @@ export async function loginRoute(req: Request, res: Response): Promise<void> {
       });
 
       res.status(200).json({
-        client: {
-          name: client.name,
-        },
+        id: client.id,
+        name: client.name,
+        email: client.email,
         token: newToken,
         refreshToken,
       });
