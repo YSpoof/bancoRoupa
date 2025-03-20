@@ -112,7 +112,8 @@ export class UserService {
 
     if (!refreshToken) {
       this.logout();
-      return;
+      // Return an observable that immediately errors out
+      return throwError(() => new Error('No refresh token available'));
     }
 
     return this.httpClient
@@ -142,8 +143,7 @@ export class UserService {
       },
     });
 
-    console.error(`NEED TO SET PARAMS`);
-    this.httpClient.delete('/api/delete').subscribe({
+    this.httpClient.delete('/api/delete', { params }).subscribe({
       next: () => {
         this.storageClient.remove('refresh');
         this.storageClient.remove('token');
@@ -185,9 +185,11 @@ export class UserService {
   private handleError = (error: HttpErrorResponse) => {
     if (error.status === 0) {
       console.error('Network error');
+      this.toastSvc.showError('Ocorreu um erro de rede');
       return throwError(() => new Error('Network error occurred'));
     }
 
+    this.toastSvc.showError('Ocorreu um erro: ' + error.message);
     return throwError(() => error.error);
   };
 }

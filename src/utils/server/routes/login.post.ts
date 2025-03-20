@@ -45,10 +45,10 @@ export async function loginRoute(req: Request, res: Response): Promise<void> {
 
     // Token-based login if no email/password
     const token = req.headers.authorization?.split(' ')[1];
-    console.warn('Req headers -> ', req.headers);
+    console.warn('Req authorization header -> ', req.headers.authorization);
 
     if (!token) {
-      res.status(400).json({ message: messages.invalidToken });
+      res.status(401).json({ message: messages.invalidToken });
       return;
     }
 

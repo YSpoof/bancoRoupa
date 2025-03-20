@@ -20,7 +20,7 @@ export const generateToken = (client: Client) => {
   };
 
   return jwt.sign(payload, process.env['JWT_SECRET']!, {
-    expiresIn: '15s',
+    expiresIn: '5s',
   });
 };
 
