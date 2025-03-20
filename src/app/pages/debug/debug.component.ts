@@ -21,7 +21,7 @@ import { UserService } from '../../services/user.service';
               </tr>
             </thead>
             <tbody>
-              @for(user of userSvc.allUsersSig(); track user.id) {
+              <!-- @for(user of userSvc.allUsersSig(); track user.id) {
               <tr class="border-t border-gray-300">
                 <td class="px-6 py-4">{{ user.name }}</td>
                 <td class="px-6 py-4">{{ user.email }}</td>
@@ -34,7 +34,7 @@ import { UserService } from '../../services/user.service';
                   {{ user.refreshToken ? 'Yes' : 'No' }}
                 </td>
               </tr>
-              }
+              } -->
             </tbody>
           </table>
         </div>
@@ -54,7 +54,7 @@ import { UserService } from '../../services/user.service';
               </tr>
             </thead>
             <tbody>
-              @for(account of userSvc.allAccountsSig(); track account.id) {
+              <!-- @for(account of userSvc.allAccountsSig(); track account.id) {
               <tr class="border-t border-gray-300">
                 <td class="px-6 py-4">{{ account.id }}</td>
                 <td class="px-6 py-4">
@@ -66,7 +66,7 @@ import { UserService } from '../../services/user.service';
                   {{ account.suspended ? 'Suspended' : 'Active' }}
                 </td>
               </tr>
-              }
+              } -->
             </tbody>
           </table>
         </div>
@@ -92,13 +92,13 @@ export class DebugComponent {
     this.toastSvc.showSuccess('Refresh token copied to clipboard');
   }
 
-  getAccountOwnerName(accountOwnerId: string) {
-    return this.userSvc
-      .allUsersSig()
-      ?.find((user) => user.id === accountOwnerId)?.name;
-  }
+  // getAccountOwnerName(accountOwnerId: string) {
+  //   return this.userSvc
+  //     .allUsersSig()
+  //     ?.find((user) => user.id === accountOwnerId)?.name;
+  // }
 
   ngOnInit() {
-    this.userSvc.debug();
+    // this.userSvc.debug();
   }
 }

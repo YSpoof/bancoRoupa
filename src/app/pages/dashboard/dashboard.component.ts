@@ -8,10 +8,10 @@ import { UserService } from '../../services/user.service';
   template: `
     <div class="flex flex-col items-center justify-center h-screen">
       <p class="text-2xl font-bold mb-4">Dashboard</p>
-      @if (userSvc.currentAccountSig() === null) {
+      @if (true) {
       <p class="text-lg">Dados da conta não disponíveis...</p>
       } @else {
-      <ul>
+      <!-- <ul>
         @for (account of userSvc.currentAccountSig()!; track account.pixi) { @if
         (!account.suspended) {
         <li>
@@ -21,7 +21,7 @@ import { UserService } from '../../services/user.service';
         } @else {
         <li>Conta suspensa: {{ account.balance }}</li>
         } }
-      </ul>
+      </ul> -->
       }
 
       <button
@@ -52,24 +52,25 @@ export class DashboardPageComponent {
   constructor() {
     afterNextRender(() => {
       this.loadAccountData();
-      this.toast.showSuccess(
-        `Bem-vindo(a), ${this.userSvc.currentUserSig()!.name}`
-      );
+      // this.toast
+      //   .showSuccess
+      //   `Bem-vindo(a), ${this.userSvc.currentUserSig()!.name}`
+      //   ();
     });
   }
 
   logout() {
-    this.userSvc.logout();
+    // this.userSvc.logout();
     this.toast.showWarning('Logout efetuado com sucesso!');
   }
 
   delete() {
-    this.userSvc.delete();
+    // this.userSvc.delete();
     this.toast.showError('Conta deletada com sucesso!');
   }
 
   loadAccountData() {
-    this.userSvc.loadAccountData();
+    // this.userSvc.loadAccountData();
     this.toast.showInfo('Dados da conta carregados com sucesso!');
   }
 }

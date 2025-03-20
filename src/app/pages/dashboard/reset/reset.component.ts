@@ -102,6 +102,6 @@ export class ResetPageComponent {
     }
 
     const { email, password } = this.resetForm.getRawValue();
-    this.userSvc.reset(email!, password!);
+    // this.userSvc.reset(email!, password!);
   }
 }

@@ -12,7 +12,7 @@ import { UserService } from '../../../services/user.service';
 
 @Component({
   imports: [ReactiveFormsModule, RouterModule],
-  template: ` @if (userSvc.currentUserSig() === null) {
+  template: ` @if (true) {
     <div class="flex flex-col items-center justify-center h-full">
       <p class="text-2xl font-bold mb-4">Abra a sua em menos em segundos!</p>
 
@@ -89,6 +89,6 @@ export class RegisterPageComponent {
       return;
     }
     const { name, email, password } = this.registerForm.getRawValue();
-    this.userSvc.register(name!, email!, password!);
+    // this.userSvc.register(name!, email!, password!);
   }
 }

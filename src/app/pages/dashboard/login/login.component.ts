@@ -12,7 +12,7 @@ import { UserService } from '../../../services/user.service';
 
 @Component({
   imports: [ReactiveFormsModule, RouterModule],
-  template: ` @if (userSvc.currentUserSig() === null) {
+  template: ` @if (true) {
     <div class="flex flex-col items-center justify-center h-full">
       <p class="text-2xl font-bold mb-4">Acesse a VestBank!</p>
 
@@ -78,12 +78,12 @@ export class LoginPageComponent {
       return;
     }
     const { email, password } = this.loginForm.getRawValue();
-    this.userSvc.login(email!, password!);
+    // this.userSvc.login(email!, password!);
   }
 
   constructor() {
     afterNextRender(() => {
-      this.userSvc.login(null, null, true);
+      // this.userSvc.login(null, null, true);
     });
   }
 }
