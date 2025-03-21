@@ -1,12 +1,7 @@
 import { afterNextRender, Component, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { StorageService } from '../../../services/storage.service';
 import { ToastService } from '../../../services/toast.service';
 import { UserService } from '../../../services/user.service';
 
@@ -52,14 +47,13 @@ import { UserService } from '../../../services/user.service';
 })
 export class LoginPageComponent {
   userSvc = inject(UserService);
+  storageSvc = inject(StorageService);
   formBuilder = inject(FormBuilder);
   toast = inject(ToastService);
-  loginForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(1),
-    ]),
+  router = inject(Router);
+  loginForm = this.formBuilder.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(1)]],
   });
 
   login() {
@@ -78,8 +72,22 @@ export class LoginPageComponent {
       }
       return;
     }
-    const { email, password } = this.loginForm.getRawValue();
-    // this.userSvc.login(email!, password!);
+    const email = this.loginForm.get('email')!.value as string;
+    const password = this.loginForm.get('password')!.value as string;
+    this.userSvc.onLogin({ email, password }).subscribe({
+      next: (res) => {
+        console.warn(res);
+        this.storageSvc.set('token', res.token);
+        this.storageSvc.set('refresh', res.refreshToken);
+        this.toast.showSuccess(`Bem-vindo(a), ${res.name}`);
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        if (err.status === 0) return;
+        console.error(err.error.message);
+        this.toast.showError(err.error.message);
+      },
+    });
   }
 
   test() {

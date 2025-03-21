@@ -1,8 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { LoginRequest, RefreshResponse, RegisterRequest } from '../types/api';
+import {
+  AccountResponse,
+  LoginRequest,
+  RefreshResponse,
+  RegisterRequest,
+  UserResponse,
+} from '../types/api';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -15,14 +21,14 @@ export class UserService {
   public $refreshNeeded = new Subject<boolean>();
 
   onLogin(credentials: LoginRequest) {
-    return this.httpClient.post('/api/login', credentials);
+    return this.httpClient.post<UserResponse>('/api/login', credentials);
   }
 
   onRegister(credentials: RegisterRequest) {
-    return this.httpClient.post('/api/register', credentials);
+    return this.httpClient.post<UserResponse>('/api/register', credentials);
   }
 
-  onLogout() {
+  doLogout() {
     this.storageClient.clear();
     this.$refreshNeeded.next(true);
     this.httpClient.delete('/api/logout');
@@ -43,9 +49,14 @@ export class UserService {
           return;
         },
         error: () => {
+          this.doLogout();
           this.router.navigate(['/login']);
           return;
         },
       });
+  }
+
+  getAccountData() {
+    return this.httpClient.get<AccountResponse>('/api/account');
   }
 }

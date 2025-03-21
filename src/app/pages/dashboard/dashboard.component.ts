@@ -1,6 +1,7 @@
-import { afterNextRender, Component, inject } from '@angular/core';
+import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { ToastService } from '../../services/toast.service';
 import { UserService } from '../../services/user.service';
+import { AccountResponse } from '../../types/api';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,20 +9,19 @@ import { UserService } from '../../services/user.service';
   template: `
     <div class="flex flex-col items-center justify-center h-screen">
       <p class="text-2xl font-bold mb-4">Dashboard</p>
-      @if (true) {
+      @if (account() === null) {
       <p class="text-lg">Dados da conta não disponíveis...</p>
       } @else {
-      <!-- <ul>
-        @for (account of userSvc.currentAccountSig()!; track account.pixi) { @if
-        (!account.suspended) {
+      <ul>
+        @if (!account()!.suspended) {
         <li>
-          Chave: {{ account.pixi }} | Saldo:
-          {{ account.balance }}
+          Chave: {{ account()!.pixi }} | Saldo:
+          {{ account()!.balance }}
         </li>
         } @else {
-        <li>Conta suspensa: {{ account.balance }}</li>
-        } }
-      </ul> -->
+        <li>Conta suspensa: {{ account()!.balance }}</li>
+        }
+      </ul>
       }
 
       <button
@@ -48,19 +48,19 @@ import { UserService } from '../../services/user.service';
 export class DashboardPageComponent {
   userSvc = inject(UserService);
   toast = inject(ToastService);
+  account = signal<AccountResponse | null>(null);
 
   constructor() {
+    this.userSvc.$refreshNeeded.subscribe(() => {
+      this.loadAccountData();
+    });
     afterNextRender(() => {
       this.loadAccountData();
-      // this.toast
-      //   .showSuccess
-      //   `Bem-vindo(a), ${this.userSvc.currentUserSig()!.name}`
-      //   ();
     });
   }
 
   logout() {
-    // this.userSvc.logout();
+    this.userSvc.doLogout();
     this.toast.showWarning('Logout efetuado com sucesso!');
   }
 
@@ -70,7 +70,15 @@ export class DashboardPageComponent {
   }
 
   loadAccountData() {
-    // this.userSvc.loadAccountData();
-    this.toast.showInfo('Dados da conta carregados com sucesso!');
+    this.userSvc.getAccountData().subscribe({
+      next: (res) => {
+        this.account.set(res);
+        this.toast.showInfo('Dados da conta carregados com sucesso!');
+      },
+      error: (_err) => {
+        this.account.set(null);
+        this.userSvc.getNewToken();
+      },
+    });
   }
 }

@@ -1,12 +1,7 @@
 import { Component, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { StorageService } from '../../../services/storage.service';
 import { ToastService } from '../../../services/toast.service';
 import { UserService } from '../../../services/user.service';
 
@@ -55,15 +50,14 @@ import { UserService } from '../../../services/user.service';
 })
 export class RegisterPageComponent {
   userSvc = inject(UserService);
+  storageSvc = inject(StorageService);
+  router = inject(Router);
   formBuilder = inject(FormBuilder);
   toast = inject(ToastService);
-  registerForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-    ]),
+  registerForm = this.formBuilder.group({
+    name: ['', [Validators.required, Validators.minLength(1)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(1)]],
   });
 
   register() {
@@ -88,7 +82,22 @@ export class RegisterPageComponent {
       }
       return;
     }
-    const { name, email, password } = this.registerForm.getRawValue();
-    // this.userSvc.register(name!, email!, password!);
+    const name = this.registerForm.get('name')!.value as string;
+    const email = this.registerForm.get('email')!.value as string;
+    const password = this.registerForm.get('password')!.value as string;
+    this.userSvc.onRegister({ name, email, password }).subscribe({
+      next: (res) => {
+        console.warn(res);
+        this.storageSvc.set('token', res.token);
+        this.storageSvc.set('refresh', res.refreshToken);
+        this.toast.showSuccess(`Olá, ${res.name}`);
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        if (err.status === 0) return;
+        console.error(err.error.message);
+        this.toast.showError(err.error.message);
+      },
+    });
   }
 }
