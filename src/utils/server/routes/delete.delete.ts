@@ -3,17 +3,9 @@ import { prisma } from '../customClients';
 import { messages } from '../messages';
 
 export async function deleteRoute(req: Request, res: Response): Promise<void> {
-  const userId = req.params['id'];
-  const accountId = req.params['accountId'];
-
-  if (!userId || !accountId) {
-    res.status(400).json({ message: messages.invalidParams });
-    return;
-  }
-
   try {
-    await prisma.account.delete({ where: { id: accountId } });
-    await prisma.client.delete({ where: { id: userId } });
+    await prisma.account.delete({ where: { clientId: req.client?.id } });
+    await prisma.client.delete({ where: { id: req.client?.id } });
 
     res.json({ message: messages.accountDeleted });
   } catch (error) {

@@ -45,3 +45,8 @@ export interface DebugAccount {
   suspended: boolean;
   balance: number;
 }
+
+export interface DebugData {
+  users: DebugUser[];
+  accounts: DebugAccount[];
+}

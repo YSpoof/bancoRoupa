@@ -1,10 +1,18 @@
 import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
 import { UserService } from '../../services/user.service';
 
 @Component({
+  imports: [RouterLink],
   template: `
-    @defer (on idle; hydrate on idle) {
+    <a
+      routerLink="/"
+      class="block px-6 py-4 bg-blue-400 w-full text-center
+    "
+      >Go home</a
+    >
+    @if (userSvc.debugData()) {
 
     <div class="p-4">
       <div class="mb-8">
@@ -21,7 +29,7 @@ import { UserService } from '../../services/user.service';
               </tr>
             </thead>
             <tbody>
-              <!-- @for(user of userSvc.allUsersSig(); track user.id) {
+              @for(user of userSvc.debugData()?.users; track user.id) {
               <tr class="border-t border-gray-300">
                 <td class="px-6 py-4">{{ user.name }}</td>
                 <td class="px-6 py-4">{{ user.email }}</td>
@@ -34,7 +42,7 @@ import { UserService } from '../../services/user.service';
                   {{ user.refreshToken ? 'Yes' : 'No' }}
                 </td>
               </tr>
-              } -->
+              }
             </tbody>
           </table>
         </div>
@@ -54,7 +62,7 @@ import { UserService } from '../../services/user.service';
               </tr>
             </thead>
             <tbody>
-              <!-- @for(account of userSvc.allAccountsSig(); track account.id) {
+              @for(account of userSvc.debugData()?.accounts; track account.id) {
               <tr class="border-t border-gray-300">
                 <td class="px-6 py-4">{{ account.id }}</td>
                 <td class="px-6 py-4">
@@ -66,15 +74,15 @@ import { UserService } from '../../services/user.service';
                   {{ account.suspended ? 'Suspended' : 'Active' }}
                 </td>
               </tr>
-              } -->
+              }
             </tbody>
           </table>
         </div>
       </div>
     </div>
-    } @placeholder {
-    <div class="flex items-center justify-center h-full">
-      <p class="text-2xl font-bold">Loading...</p>
+    } @else {
+    <div class="p-4">
+      <p>Debug data not available (yet ?)</p>
     </div>
     }
   `,
@@ -92,13 +100,13 @@ export class DebugComponent {
     this.toastSvc.showSuccess('Refresh token copied to clipboard');
   }
 
-  // getAccountOwnerName(accountOwnerId: string) {
-  //   return this.userSvc
-  //     .allUsersSig()
-  //     ?.find((user) => user.id === accountOwnerId)?.name;
-  // }
+  getAccountOwnerName(accountOwnerId: string) {
+    return this.userSvc
+      .debugData()
+      ?.users?.find((user) => user.id === accountOwnerId)?.name;
+  }
 
   ngOnInit() {
-    // this.userSvc.debug();
+    this.userSvc.getDebugData();
   }
 }

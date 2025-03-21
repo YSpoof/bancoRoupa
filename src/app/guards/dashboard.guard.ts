@@ -6,7 +6,7 @@ export const dashboardGuard: CanActivateFn = (_route, _state) => {
   const userSvc = inject(UserService);
   const router = inject(Router);
 
-  if (false) {
+  if (!userSvc.authenticated()) {
     router.navigateByUrl('/dashboard/login');
     return false;
   }

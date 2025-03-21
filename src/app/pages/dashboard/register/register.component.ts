@@ -90,6 +90,7 @@ export class RegisterPageComponent {
         console.warn(res);
         this.storageSvc.set('token', res.token);
         this.storageSvc.set('refresh', res.refreshToken);
+        this.userSvc.authenticated.set(true);
         this.toast.showSuccess(`Olá, ${res.name}`);
         this.router.navigate(['/dashboard']);
       },

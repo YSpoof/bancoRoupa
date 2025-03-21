@@ -56,7 +56,26 @@ export class LoginPageComponent {
     password: ['', [Validators.required, Validators.minLength(1)]],
   });
 
-  login() {
+  login(token = false, silent = false) {
+    if (token) {
+      this.userSvc.onLogin(null).subscribe({
+        next: (res) => {
+          this.storageSvc.set('token', res.token);
+          this.storageSvc.set('refresh', res.refreshToken);
+          this.userSvc.authenticated.set(true);
+          this.toast.showSuccess(`Bem-vindo(a), ${res.name}`);
+          this.router.navigate(['/dashboard']);
+        },
+        error: (err) => {
+          if (err.status === 0) return;
+          this.userSvc.authenticated.set(false);
+          if (silent) return;
+          console.error(err.error.message);
+          this.toast.showError(err.error.message);
+        },
+      });
+      return;
+    }
     if (!this.loginForm.valid) {
       if (this.loginForm.get('email')?.errors?.['required']) {
         this.toast.showError('Preencha o campo email.');
@@ -79,11 +98,13 @@ export class LoginPageComponent {
         console.warn(res);
         this.storageSvc.set('token', res.token);
         this.storageSvc.set('refresh', res.refreshToken);
+        this.userSvc.authenticated.set(true);
         this.toast.showSuccess(`Bem-vindo(a), ${res.name}`);
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         if (err.status === 0) return;
+        this.userSvc.authenticated.set(false);
         console.error(err.error.message);
         this.toast.showError(err.error.message);
       },
@@ -99,7 +120,7 @@ export class LoginPageComponent {
       this.userSvc.$refreshNeeded.subscribe(() => {
         console.log('We have a new token, lets retry fetch');
       });
-      // this.userSvc.login(null, null, true);
+      this.login(true, true);
     });
   }
 }

@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import {
   AccountResponse,
+  DebugData,
   LoginRequest,
   RefreshResponse,
   RegisterRequest,
@@ -19,8 +20,10 @@ export class UserService {
   private storageClient = inject(StorageService);
   private router = inject(Router);
   public $refreshNeeded = new Subject<boolean>();
+  public authenticated = signal<boolean>(false);
+  public debugData = signal<DebugData | null>(null);
 
-  onLogin(credentials: LoginRequest) {
+  onLogin(credentials: LoginRequest | null) {
     return this.httpClient.post<UserResponse>('/api/login', credentials);
   }
 
@@ -28,10 +31,16 @@ export class UserService {
     return this.httpClient.post<UserResponse>('/api/register', credentials);
   }
 
+  doDelete() {
+    return this.httpClient.delete<{ message: string }>('/api/delete');
+  }
+
   doLogout() {
+    this.httpClient.delete('/api/logout');
+    this.authenticated.set(false);
     this.storageClient.clear();
     this.$refreshNeeded.next(true);
-    this.httpClient.delete('/api/logout');
+    this.router.navigate(['/']);
   }
 
   getNewToken() {
@@ -58,5 +67,16 @@ export class UserService {
 
   getAccountData() {
     return this.httpClient.get<AccountResponse>('/api/account');
+  }
+
+  getDebugData() {
+    return this.httpClient.get<DebugData>('/api/debug').subscribe({
+      next: (res) => {
+        this.debugData.set(res);
+      },
+      error: () => {
+        this.debugData.set(null);
+      },
+    });
   }
 }

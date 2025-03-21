@@ -51,9 +51,6 @@ export class DashboardPageComponent {
   account = signal<AccountResponse | null>(null);
 
   constructor() {
-    this.userSvc.$refreshNeeded.subscribe(() => {
-      this.loadAccountData();
-    });
     afterNextRender(() => {
       this.loadAccountData();
     });
@@ -65,11 +62,27 @@ export class DashboardPageComponent {
   }
 
   delete() {
-    // this.userSvc.delete();
-    this.toast.showError('Conta deletada com sucesso!');
+    if (
+      confirm(
+        'Tem certeza que deseja deletar sua conta? Esta ação não pode ser desfeita.'
+      )
+    ) {
+      this.userSvc.doDelete().subscribe({
+        next: (res) => {
+          this.userSvc.doLogout();
+          this.toast.showSuccess(res.message);
+        },
+        error: (e) => {
+          this.toast.showError(
+            e.error ? e.error.message : 'Erro ao deletar conta!'
+          );
+        },
+      });
+    }
   }
 
   loadAccountData() {
+    this.account.set(null);
     this.userSvc.getAccountData().subscribe({
       next: (res) => {
         this.account.set(res);

@@ -18,6 +18,11 @@ import { RouterModule } from '@angular/router';
             class="px-4 py-2 font-bold transition-all rounded-md bg-vb-black-secondary hover:bg-vb-tertiary active:scale-95 text-white"
             >Painel</a
           >
+          <a
+            routerLink="/debug"
+            class="px-4 py-2 font-bold transition-all rounded-md bg-vb-black-secondary hover:bg-vb-tertiary active:scale-95 text-white"
+            >DEBUG</a
+          >
         </div>
       </nav>
     </header>

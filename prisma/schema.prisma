@@ -11,19 +11,19 @@ datasource db {
 }
 
 model Client {
-  id           String    @id @default(uuid())
+  id           String   @id @default(uuid())
   name         String
-  email        String    @unique
+  email        String   @unique
   password     String
   refreshToken String?
-  createdAt    DateTime  @default(now())
-  Account      Account[]
+  createdAt    DateTime @default(now())
+  Account      Account?
 }
 
 model Account {
   id        String  @id @default(uuid())
   client    Client  @relation(fields: [clientId], references: [id])
-  clientId  String
+  clientId  String  @unique
   pixi      String  @unique @default(cuid())
   suspended Boolean @default(false)
   balance   Int     @default(0)
