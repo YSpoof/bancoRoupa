@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { LoginRequest, RegisterRequest } from '../types/api';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { LoginRequest, RefreshResponse, RegisterRequest } from '../types/api';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -9,8 +11,8 @@ import { StorageService } from './storage.service';
 export class UserService {
   private httpClient = inject(HttpClient);
   private storageClient = inject(StorageService);
-
-  refreshNeeded = signal(false);
+  private router = inject(Router);
+  public $refreshNeeded = new Subject<boolean>();
 
   onLogin(credentials: LoginRequest) {
     return this.httpClient.post('/api/login', credentials);
@@ -22,11 +24,28 @@ export class UserService {
 
   onLogout() {
     this.storageClient.clear();
-    this.refreshNeeded.set(true);
+    this.$refreshNeeded.next(true);
     this.httpClient.delete('/api/logout');
   }
 
-  getNewToken(refreshToken: string) {
-    return this.httpClient.post('/api/refresh', { refreshToken });
+  getNewToken() {
+    const refreshToken = this.storageClient.get<string>('refresh');
+    if (!refreshToken) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.httpClient
+      .post<RefreshResponse>('/api/refresh', { refreshToken })
+      .subscribe({
+        next: (res) => {
+          this.storageClient.set('token', res.token);
+          this.$refreshNeeded.next(true);
+          return;
+        },
+        error: () => {
+          this.router.navigate(['/login']);
+          return;
+        },
+      });
   }
 }

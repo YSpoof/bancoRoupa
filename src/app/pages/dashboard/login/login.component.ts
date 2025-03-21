@@ -45,6 +45,7 @@ import { UserService } from '../../../services/user.service';
           class="text-yellow-500 hover:text-yellow-700"
           >Esqueci a senha</a
         >
+        <button type="button" (click)="test()">Test</button>
       </form>
     </div>
     }`,
@@ -81,8 +82,15 @@ export class LoginPageComponent {
     // this.userSvc.login(email!, password!);
   }
 
+  test() {
+    this.userSvc.getNewToken();
+  }
+
   constructor() {
     afterNextRender(() => {
+      this.userSvc.$refreshNeeded.subscribe(() => {
+        console.log('We have a new token, lets retry fetch');
+      });
       // this.userSvc.login(null, null, true);
     });
   }

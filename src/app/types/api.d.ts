@@ -18,7 +18,6 @@ export interface UserResponse {
 }
 
 export interface RefreshResponse {
-  message?: string;
   token: string;
 }
 
